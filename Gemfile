@@ -1,10 +1,8 @@
 source "https://rubygems.org"
-gem 'rubygems'
 ruby '2.5.1'
 gem 'rspec'
-gem 'nokogiri'
 gem 'pry'
 gem 'json'
-gem 'pp'
 gem 'csv'
+gem 'nokogiri'
 gem 'google_drive'
