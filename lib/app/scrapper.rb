@@ -1,8 +1,8 @@
 class Scrapper
 
-  @@name_and_email = []
+  @@name_and_email = [] #création d'un array
   
-   def url_and_name
+   def url_and_name  #récuperation des données sur l'annuaire
      url = "http://annuaire-des-mairies.com/val-d-oise.html"
      doc = Nokogiri::HTML(open(url))
      url_path = doc.css("a[href].lientxt")
@@ -16,7 +16,7 @@ class Scrapper
      name_and_url
    end
   
-   def get_townhall_email(url)
+   def get_townhall_email(url) #récuperation des e-mails des mairies
      doc = Nokogiri::HTML(open(url))
      email = doc.xpath("/html/body/div/main/section[2]/div/table/tbody/tr[4]/td[2]").text
    end
@@ -30,7 +30,7 @@ class Scrapper
      @@name_and_email
    end
   
-   def save_as_JSON
+   def save_as_JSON #méthode permettant de place et organiser les données grace au gem JSON
      json = File.open('/Users/mallaury/Desktop/semaine3/mon_projet/db/email.json', "w") do |f|
        f.write(@@name_and_email.to_json)
      end
@@ -39,14 +39,13 @@ class Scrapper
   
   
 
-   def save_to_spreadsheet
+   def save_to_spreadsheet #méthode permettant d'organiser les données dans un tableau en ligne google sheet
   session = GoogleDrive::Session.from_config("config.json")
   ws = session.spreadsheet_by_key("1v-8l2WnCf8tsFLNPzQrifYNwhRaVsXGdlb6TxJtVJ1c").worksheets[0]
-   #
 
 
- 
-  @@name_and_email.each.with_index do |k, i|
+    
+  @@name_and_email.each.with_index do |k, i| #paramètres necessaires pour la mise en forme des données dans le tableau
   ws[i+1, 1] = k.keys.to_s[2..-3]
   ws[i+1, 2] = k.values.to_s[2..-3]
 
@@ -55,12 +54,12 @@ class Scrapper
   
   end
   
-  def save_as_csv
+  def save_as_csv #organisationndes données dans le fichier email.csv 
     
     CSV.open("./db/emails.csv", "wb") do |csv|
       @@name_and_email.each do |element|
 
-        csv << [element.keys.join.to_s, element.values.join.to_s]
+        csv << [element.keys.join.to_s, element.values.join.to_s] #organisatione et présentation des données
       end
     end 
   end 
